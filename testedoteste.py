@@ -1,31 +1,17 @@
 import requests
-
-page = requests.get("http://www.uece.br/uece/index.php/conhecaauece/restauranteuniversitario")
-status = page.status_code
-
 from bs4 import BeautifulSoup
 
-html_doc = """
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>O TESTE MASTER</title>
-	</head>
-	<body>
-		<p>Testando</p>
-		<p>Testando 123</p>
-	</body>
-</html>
-"""
+## captura tudo quanto é html da página e transforma em um objeto(objeto response)
+page = requests.get("http://www.uece.br/uece/index.php/conhecaauece/restauranteuniversitario")
+#status = page.status_code		-> retorna se deu certo
 
+## convertendo todo o conteúdo da string em objeto beautifulsoup
 soup = BeautifulSoup(page.content, 'html.parser')
-#print(soup.prettify())
-list(soup.children)
-#[type(item) for item in list(soup.children)]
-'''for item in list(soup.children):
-	if(type(item) != type(list(soup.children)[2])):
-		print("********")
-		print(type(item))
-		print(item)'''
 
-print(soup.tbody)
+## .tbody retorna todo o conteúdo da tag tbody
+soup_tbody = soup.tbody
+
+## .find_all(tag) retorna o conteúdo da tag td que está dentro da tbody
+listatr = soup_tbody.find_all('td')
+for item in listatr:
+	print(item.prettify())
